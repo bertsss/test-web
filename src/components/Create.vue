@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-	<h1>Product Show Page</h1>
+	<h1>Add Product</h1>
 	<div>
 	  <table style="width:100%">
 		<tr>
@@ -23,7 +23,7 @@
 			<th>Code</th>
             <input type="number" v-model="product.code">
         </tr>
-		<td><button v-on:click="update(product.id)">Save</button></td>
+		<td><button v-on:click="create()">Save</button></td>
 	 </table>
 	</div>
   </div>
@@ -39,22 +39,14 @@ export default {
 		}
 	},
   	methods: {
-		read() {
-			axios.get(config.url + 'products/'+ this.$route.params.id).then(({ data }) => {
-				this.product = data;
-			});
-        },
-        update() {
-            axios.put(config.url + 'products/'+ this.$route.params.id, this.product).then(({ data }) => {
-				this.product = data;
-				alert("Successfully updated, back to listing page to see changes");
+        create() {
+			console.log(this.product);
+            axios.post(config.url + 'products', this.product).then(() => {
+				this.$router.push('/');
 			}).catch(function (error) {
     			alert("Fields cannot be blank");
   			});
         },
-	},
-	beforeMount() {
-		this.read();
 	},
 }
 </script>

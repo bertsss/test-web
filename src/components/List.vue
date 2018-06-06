@@ -17,14 +17,16 @@
 			<td>{{ product.quantity }}</td>
 			<td>{{ product.size }}</td>
 			<td>{{ product.code }}</td>
-			<td><router-link :to="'/edit/' + product.id">Edit</router-link></td>
+			<td><router-link :to="'/edit/' + product.id">Edit</router-link><button v-on:click="del(product.id)">Delete</button></td>
 		</tr>
 	 </table>
+	 <router-link :to="'/create/'">Add</router-link>
 	</div>
   </div>
 </template>
 <script>
 import axios from 'axios';
+import config from '../../config/env.js';
 
 export default {
   	name: 'hello',
@@ -35,7 +37,12 @@ export default {
 	},
   	methods: {
 		read() {
-			axios.get('http://localhost:8000/api/products').then(({ data }) => {
+			axios.get(config.url + 'products').then(({ data }) => {
+				this.products = data;
+			});
+		},
+		del(id) {
+			axios.delete(config.url + 'products/' + id).then(({ data }) => {
 				this.products = data;
 			});
 		},
